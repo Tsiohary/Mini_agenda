@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>Tâches</title>
+    <Style>
+      body{
+        padding-top: 30px;
+      }
+    </Style>
+</head>
+<body>
+    <div class="container">
+            <div class="card border-dark">
+            <div class="card-header">
+                <nav class="navbar navbar-light bg-light">
+                    <p>{{request.user}}</p>
+                    <div class="navbar" data-toggle="collapse" aria-expanded="false">
+                      {% if request.user.is_authenticated %}
+                          <p></p>
+                          <a href="{% url 'logout' %}" title="Se Déconnecter" onclick="return confirm('Vous-voulez quitter vraiment ?');"><img src="{% static 'icon/Logout.png' %}"></a>
+                      {% else %}
+                          <a href="{% url 'login' %}" title="Se Connecter"><img src="{% static 'icon/Login.png' %}"></a>
+                      {% endif %}
+                    </div>
+                    <div class="collapse navbar-collapse">
+                      {% if request.user.is_authenticated %}
+                          <p></p>
+                          <a href="{% url 'logout' %}" title="Se Déconnecter" onclick="return confirm('Vous-voulez quitter vraiment ?');"><img src="{% static 'icon/Logout.png' %}"></a>
+                      {% else %}
+                          <a href="{% url 'login' %}" title="Se Connecter"><img src="{% static 'icon/Login.png' %}"></a>
+                      {% endif %}
+                    </div>
+                </nav>
+            </div>
+
+            <div class="card-body">
+              <h2 class="text-center">Evenements</h2>
+              <p>
+                <b>Total événement &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :</b> {{countt}} <br>
+                <b>Evénement en cours &nbsp;:</b> {{countfalse}} <br>
+                <b>Evénement términé &nbsp;&nbsp;:</b> <i style="color: green;">{{counttrue}}</i>
+             </p>
+              <div class="row">
+                <div class="col-11">
+                  <form method="GET">
+                    <input class="form-control" placeholder="Search" type="text" name="search-area" value="{{search_input}}">
+                    <!-- input class="btn btn-outline-success" type="submit" value="Search" -->
+                  </form>
+                </div>
+                <div class="col-1">
+                  <a href="{% url 'task-create' %}" title="Nouveau événement"><img src="{% static 'icon/Nouveau.png' %}"></a>
+                </div>
+              </div><br>
+
+              <table class="table table-hover">
+                <thead>
+
+                </thead>
+                {% for task in tasks %}
+                <tbody>
+                  <tr>
+                    {% if task.complete %}
+                    <th scope="row" style="color: green;"><s>{{task.title}}</s></th>
+                    <td>
+                      <a href="{% url 'task-update' task.id %}" title="Modifier"><img src="{% static 'icon/Edit.png' %}"></a>
+                      <a href="{% url 'task-delete' task.id %}" title="Supprimmer"><img src="{% static 'icon/Delete.png' %}"></a>
+                      <a href="{% url 'task' task.id %}" title="Voir détail"><img src="{% static 'icon/Detail.png' %}"></a>
+                    </td>
+                    {% else %}
+                    <th scope="row">{{task.title}}</th>
+                    <td>
+                      <a href="{% url 'task-update' task.id %}" title="Modifier" onclick="return confirm('Vous-voulez modifier ?');"><img src="{% static 'icon/Edit.png' %}"></a>
+                      <a href="{% url 'task-delete' task.id %}" title="Supprimmer"><img src="{% static 'icon/Delete.png' %}"></a>
+                      <a href="{% url 'task' task.id %}" title="Voir détail"><img src="{% static 'icon/Detail.png' %}"></a>
+                    </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+                {% empty %}
+                    <h4 class="text-center"><img src="{% static 'icon/Vide.png' %}"> Aucun enrégistrement</h4>
+                {% endfor %}
+              </table>
+              <blockquote class="blockquote mb-0 text-center">
+                <footer class="blockquote-footer">Copyright © Juin 2022 By Satsima</footer>
+              </blockquote>
+            </div>
+            </div>
+<script src="{% static 'css/jquery.min.js' %}"></script>
+<script src="{% static 'css/popper.min.js' %}"></script>
+<script src="{% static 'css/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
